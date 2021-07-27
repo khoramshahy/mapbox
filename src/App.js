@@ -127,6 +127,15 @@ const App = () => {
                 }
             });
         
+            // change cursor to pointer when user hovers over a clickable country
+            map.on("mouseenter", "country-selected", e => {
+                map.getCanvas().style.cursor = "pointer";
+            });
+        
+            // reset cursor to default when user is no longer hovering over a clickable country
+            map.on("mouseleave", "country-selected", () => {
+                map.getCanvas().style.cursor = "auto";
+            });
 
         }        
 
