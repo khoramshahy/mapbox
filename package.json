@@ -8,19 +8,24 @@
     "build": "react-scripts build",
     "test": "react-scripts test"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/khoramshahy/mapbox.git"
-  },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/khoramshahy/mapbox/issues"
-  },
-  "homepage": "https://github.com/khoramshahy/mapbox#readme",
   "dependencies": {
+    "mapbox-gl": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "^4.0.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
