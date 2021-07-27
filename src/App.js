@@ -2,7 +2,7 @@
 import ReactDOM from "react-dom";
 import React, { useState, useRef, useEffect } from "react";
 //mapbox
-import mapboxgl from "mapbox-gl";
+import mapboxgl from "!mapbox-gl";
 //material-ui
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
