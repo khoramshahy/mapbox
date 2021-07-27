@@ -16,6 +16,8 @@ import { Pie } from 'react-chartjs-2';
 import { api } from './api';
 //constants
 import { Color_02, Color_1 } from './constants/colors';
+//components
+import Popup from "./components/Popup";
 
 //css
 import './App.css'
@@ -27,6 +29,7 @@ var map;
 const App = () => {
     //mapbox
     const mapContainerRef = useRef(null);
+    const popUpRef = useRef(new mapboxgl.Popup({ offset: 15 }));
     //autocomplete
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
@@ -66,12 +69,9 @@ const App = () => {
      * debounce to prevent multiple extra request to API
      */
     useEffect(() => {
-        // if(!open) return;
 
-        if(!inputValue) {
-            // setOptions([]);
-            return;
-        }
+        if(!inputValue) return;
+    
         const delayDebounceFn = setTimeout(() => {
             getData();
         }, 1000)
@@ -105,7 +105,31 @@ const App = () => {
                 'country-label'
               );
             }
-        }
+            map.setFilter('country-selected', [
+                "in",
+                "iso_3166_1_alpha_3",
+                ...selectedOptions.map(d => d.alpha3Code)
+              ]);
+
+            //show popup when user clicks on a highlighted country
+            map.on("click", "country-selected", e => {
+                if (e.features.length) {
+                const feature = e.features[0];
+                // create popup node
+                console.log('eeee', e.lngLat)
+                const popupNode = document.createElement("div");
+                ReactDOM.render(<Popup feature={feature} lngLat={{lng: e.lngLat.lng, lat: e.lngLat.lat}} />, popupNode);
+                // set popup on map
+                popUpRef.current
+                    .setLngLat(e.lngLat)
+                    .setDOMContent(popupNode)
+                    .addTo(map);
+                }
+            });
+        
+
+        }        
+
         showChart();
     }, [selectedOptions]);
 
@@ -182,7 +206,7 @@ const App = () => {
                     />
                     )}
                 />
-                {chartData.datasets && <div className="chart">
+                {selectedOptions.length>0 && <div className="chart">
                     <h3>population chart:</h3>
                     <Pie data={chartData}  options={{
                         responsive: true
