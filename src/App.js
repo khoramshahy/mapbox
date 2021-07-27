@@ -83,8 +83,29 @@ const App = () => {
      * update chart and map when selected countries is changed
      */
     useEffect(() => {
-        if(selectedOptions.length === 0) return;
-        console.log('sssss',  selectedOptions)
+        // if(selectedOptions.length === 0) return;
+
+        //highlight selected countries
+        if(map.isStyleLoaded()){
+            if(!map.getLayer('country-selected')){
+              map.addLayer(
+                {
+                  id: 'country-selected',
+                  source: {
+                    type: 'vector',
+                    url: 'mapbox://mapbox.country-boundaries-v1',
+                  },
+                  'source-layer': 'country_boundaries',
+                  type: 'fill',
+                  paint: {
+                    'fill-color': '#d2361e',
+                    'fill-opacity': 1,
+                  },
+                },
+                'country-label'
+              );
+            }
+        }
         showChart();
     }, [selectedOptions]);
 
