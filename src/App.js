@@ -19,11 +19,23 @@ const App = () => {
     map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/mapbox/navigation-day-v1",
-      zoom: 0,
-      center:[0,0]
+    //   zoom: 0,
+    //   center:[0,0]
     });
 
-
+    map.fitBounds([
+        [180, 90], // southwestern corner of the bounds
+        [-160,-60] // northeastern corner of the bounds
+        ]);
+  
+      // add navigation control (zoom buttons)
+      map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
+      map.addControl(new mapboxgl.FullscreenControl());
+  
+      map.on("load", () => {
+        map.getCanvas().style.cursor = "auto"; 
+      });
+  
     // clean up on unmount
     return () => map.remove();
   }, []); 
