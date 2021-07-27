@@ -6,6 +6,11 @@ This project was bootstrapped with React, Mapbox, axios, chartjs and material-ui
 
 In the project directory, you can run:
 
+## [Demo](https://festive-hermann-e92afb.netlify.app/)
+
+### `npm install`
+installs requirement packages
+
 ### `npm start`
 
 Runs the app in the development mode.\
