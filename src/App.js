@@ -7,6 +7,11 @@ import mapboxgl from "mapbox-gl";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
+//axios
+import axios from 'axios';
+//api
+import { api } from './api'
+
 //css
 import './App.css'
 
@@ -46,9 +51,26 @@ const App = () => {
         map.getCanvas().style.cursor = "auto"; 
       });
   
-    // clean up on unmount
-    return () => map.remove();
-  }, []); 
+        // clean up on unmount
+        return () => map.remove();
+    }, []); 
+
+    useEffect(() => {
+        getData()
+      }, [inputValue])
+
+    const getData = async () => {
+        try{
+            setLoading(true);
+            const res = await axios.get(api.countriesList+inputValue)
+            if(res.status === 200){
+                setOptions(res.data);
+            } 
+            setLoading(false);
+        } catch (e) {
+            setLoading(false);     
+        }        
+    }
 
     return (
         <>
