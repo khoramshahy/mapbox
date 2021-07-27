@@ -25,22 +25,22 @@ const App = () => {
     //autocomplete
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
-    const [options, setOptions] = useState([{name: 'sss'},{name: 'fff'},{name: 'ggg'},{name: 'jjj'}]);
-    const [selectedOptions, setSelectedOptions] = useState([{name: 'ggg'},{name: 'jjj'},]);
+    const [options, setOptions] = useState([]);
+    const [selectedOptions, setSelectedOptions] = useState([]);
     const [loading, setLoading] = useState(false);
 
     // initialize map when component mounts
-  useEffect(() => {
-    map = new mapboxgl.Map({
-      container: mapContainerRef.current,
-      style: "mapbox://styles/mapbox/navigation-day-v1",
-    //   zoom: 0,
-    //   center:[0,0]
-    });
+    useEffect(() => {
+        map = new mapboxgl.Map({
+        container: mapContainerRef.current,
+        style: "mapbox://styles/mapbox/navigation-day-v1",
+        //   zoom: 0,
+        //   center:[0,0]
+        });
 
-    map.fitBounds([
-        [180, 90], // southwestern corner of the bounds
-        [-160,-60] // northeastern corner of the bounds
+        map.fitBounds([
+            [180, 90], // southwestern corner of the bounds
+            [-160,-60] // northeastern corner of the bounds
         ]);
   
       // add navigation control (zoom buttons)
@@ -55,9 +55,22 @@ const App = () => {
         return () => map.remove();
     }, []); 
 
+    /**
+     * debounce to prevent multiple extra request to API
+     */
     useEffect(() => {
-        getData()
-      }, [inputValue])
+        // if(!open) return;
+
+        if(!inputValue) {
+            // setOptions([]);
+            return;
+        }
+        const delayDebounceFn = setTimeout(() => {
+            getData();
+        }, 1000)
+
+        return () => clearTimeout(delayDebounceFn)
+    }, [inputValue])
 
     const getData = async () => {
         try{
