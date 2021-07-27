@@ -4,4 +4,22 @@
     bottom: 0;
     left: 0;
     right: 0;
-  }
+}
+
+.sidebar {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 15px;
+    font-family: monospace;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 20px;
+    border-radius: 10px;
+    height: auto;
+}
+
+.auto-complete{
+    width: 400px;
+}
