@@ -9,8 +9,13 @@ import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 //axios
 import axios from 'axios';
+//chartjs
+import { Pie } from 'react-chartjs-2';
+
 //api
-import { api } from './api'
+import { api } from './api';
+//constants
+import { Color_02, Color_1 } from './constants/colors';
 
 //css
 import './App.css'
@@ -28,6 +33,8 @@ const App = () => {
     const [options, setOptions] = useState([]);
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [loading, setLoading] = useState(false);
+    //chart data
+    const [chartData, setChartData] = useState({})
 
     // initialize map when component mounts
     useEffect(() => {
@@ -72,6 +79,15 @@ const App = () => {
         return () => clearTimeout(delayDebounceFn)
     }, [inputValue])
 
+    /**
+     * update chart and map when selected countries is changed
+     */
+    useEffect(() => {
+        if(selectedOptions.length === 0) return;
+        console.log('sssss',  selectedOptions)
+        showChart();
+    }, [selectedOptions]);
+
     const getData = async () => {
         try{
             setLoading(true);
@@ -84,6 +100,22 @@ const App = () => {
             setLoading(false);     
         }        
     }
+
+    const showChart = () => {
+        const data = {
+         labels: selectedOptions.map(v => v.name),
+         datasets: [
+           {
+             label: 'population',
+             data: selectedOptions.map(v => v.population),
+             backgroundColor: Color_02,
+             borderColor: Color_1,
+             borderWidth: 1,
+           },
+         ],
+       };
+       setChartData(data);
+     }
 
     return (
         <>
@@ -129,6 +161,12 @@ const App = () => {
                     />
                     )}
                 />
+                {chartData.datasets && <div className="chart">
+                    <h3>population chart:</h3>
+                    <Pie data={chartData}  options={{
+                        responsive: true
+                        }} />
+                </div>}
             </div>
             <div ref={mapContainerRef} className="map-container" />
         </>
